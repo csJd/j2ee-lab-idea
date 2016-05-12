@@ -10,6 +10,7 @@
         <element id="directory" name="lib">
           <element id="library" level="application" name="hibernate-5.1" />
           <element id="library" level="application" name="struts-2.3.28" />
+          <element id="library" level="application" name="mysql-connector-java-5.1.38-bin" />
         </element>
       </element>
     </root>

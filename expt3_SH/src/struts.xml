@@ -6,7 +6,17 @@
 
 <struts>
     <package name="default" extends="struts-default">
-        <action name="edit" class="action.EditAction" method="login">
+        <action name="edit" class="action.UserAction" method="editUser">
+            <result name="success">/index.jsp</result>
+            <result name="input">/edit.jsp</result>
+        </action>
+
+        <action name="add" class="action.UserAction" method="addUser">
+            <result name="success">/index.jsp</result>
+            <result name="input">/add.jsp</result>
+        </action>
+
+        <action name="del" class="action.UserAction" method="delUser">
             <result name="success">/index.jsp</result>
             <result name="input">/edit.jsp</result>
         </action>

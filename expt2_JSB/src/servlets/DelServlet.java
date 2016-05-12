@@ -1,5 +1,7 @@
 package servlets;
 
+import dao.UserDao;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,11 +12,19 @@ import java.io.IOException;
 /**
  * Created by dd on 2016/5/11.
  */
-@WebServlet(name = "DelServlet")
+@WebServlet("/DelServlet")
 public class DelServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp);
+        int id = Integer.valueOf(req.getParameter("id"));
+        UserDao dao = new UserDao();
+        if (dao.delete(id)) {
+            req.getSession().setAttribute("hint", "删除成功");
+            req.getSession().setAttribute("color", "green");
+        } else {
+            req.getSession().setAttribute("hint", "删除失败");
+            req.getSession().setAttribute("color", "red");
+        }
+        resp.sendRedirect("index.jsp");
     }
-
 }

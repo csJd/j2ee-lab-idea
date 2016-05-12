@@ -6,54 +6,53 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.DriverManager" %>
-<%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="java.sql.ResultSet" %>
+<%@ page import="beans.User" %>
+<%@ page import="dao.UserDao" %>
+<%@ page import="java.util.List" %>
 <html>
 <head>
-  <title>用户管理</title>
+    <title>用户管理</title>
 </head>
 <body>
 
 <%
-  String hint = (String) session.getAttribute("hint");
-  String color = (String) session.getAttribute("color");
-  if (hint != null) {
+    String hint = (String) session.getAttribute("hint");
+    String color = (String) session.getAttribute("color");
+    if (hint != null) {
 %>
-<div style="color: <%=color%>"><%=hint%></div>
+<div style="color: <%=color%>"><%=hint%>
+</div>
 <%
-    session.removeAttribute("hint");
-  }
+        session.removeAttribute("hint");
+    }
 %>
 
 <%
-  Class.forName("com.mysql.jdbc.Driver").newInstance();//加载驱动程序
-  String url = "jdbc:mysql://localhost:3306/j2ee";//数据库连接串
-  Connection conn = DriverManager.getConnection(url, "root", "9508");//建立连接
-  String sql = "SELECT * FROM users";
-  PreparedStatement pStmt = conn.prepareStatement(sql);
-  ResultSet rs = pStmt.executeQuery();
+    UserDao dao = new UserDao();
+    List<User> list = dao.findAllUser();
 %>
 
 
 <div style="font-size: 30px">用户管理</div>
 <table align="center" border="true" width="100%">
-  <tr>
-    <th>编号</th>
-    <th>用户名</th>
-    <th>密码</th>
-    <th colspan="2">操作</th>
-  </tr>
-  <%while(rs.next()){%>
-  <tr>
-    <td align="center"><%=rs.getInt("id") %></td>
-    <td align="center"><%=rs.getString("username") %></td>
-    <td align="center"><%=rs.getString("password") %></td>
-    <td align="center"><a href="edit.jsp?id=<%=rs.getInt("id")%>">编辑</a></td>
-    <td align="center"><a href="delete.jsp?id=<%=rs.getInt("id")%>">删除</a></td>
-  </tr>
-  <%} %>
+    <tr>
+        <th>编号</th>
+        <th>用户名</th>
+        <th>密码</th>
+        <th colspan="2">操作</th>
+    </tr>
+    <%for (User u : list) {%>
+    <tr>
+        <td align="center"><%=u.getId() %>
+        </td>
+        <td align="center"><%=u.getUsername() %>
+        </td>
+        <td align="center"><%=u.getPassword() %>
+        </td>
+        <td align="center"><a href="edit.jsp?id=<%=u.getId()%>">编辑</a></td>
+        <td align="center"><a href="delete.jsp?id=<%=u.getId()%>">删除</a></td>
+    </tr>
+    <%} %>
 </table>
 
 <br>
